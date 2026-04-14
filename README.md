@@ -252,9 +252,3 @@ v2 不追求全流程自动化，专注**审查这一个环节做到极致**。
 ## 参考
 
 - ARIS 原版: https://github.com/CNMarsCake/ARIS-fork
-- Claude Code: https://docs.anthropic.com/en/docs/claude-code
-- GitHub Copilot Chat
-
-## License
-
-MIT
