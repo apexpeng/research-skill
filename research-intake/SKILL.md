@@ -1,6 +1,6 @@
 ---
 name: research-intake
-description: 研究写作工作流 - 立项阶段。生成 project_brief.md 和 claims_evidence_matrix.md。使用中文输出，Coordinator/Executor/Reviewer/Supervisor四角色体系。
+description: 研究写作工作流 - 立项阶段。生成 project_brief.md 和 claims_evidence_matrix.md。使用中文输出，Coordinator/Executor/Reviewer/Supervisor 四角色体系。
 argument-hint: [用户提供的研究材料或主题描述]
 allowed-tools: Bash, Read, Write, Glob, Grep, WebSearch, WebFetch, TodoWrite, Agent
 ---
@@ -10,6 +10,7 @@ allowed-tools: Bash, Read, Write, Glob, Grep, WebSearch, WebFetch, TodoWrite, Ag
 ## 阶段目标
 
 接收用户输入，生成标准化项目文档：
+
 - `project_brief.md` — 项目简介与研究目标
 - `claims_evidence_matrix.md` — 主张-证据矩阵
 
@@ -19,7 +20,7 @@ allowed-tools: Bash, Read, Write, Glob, Grep, WebSearch, WebFetch, TodoWrite, Ag
 |------|------|---------|
 | Coordinator | 调度者，分析输入，分配任务 | 原生会话 |
 | Executor | 执行者，生成文档 | 原生会话或 external worker |
-| 咚咚 | 审查者，检查完整性 | 原生会话 |
+| Reviewer | 审查者，检查完整性 | 原生会话 |
 | Supervisor | 监督者，门禁判定 | 原生会话 |
 
 ## 输入
@@ -29,7 +30,7 @@ allowed-tools: Bash, Read, Write, Glob, Grep, WebSearch, WebFetch, TodoWrite, Ag
 
 ## 输出文件
 
-```
+```text
 research-workspace/outputs/projects/<project_key>/paper/
 ├── project_brief.md           # 项目简介
 ├── claims_evidence_matrix.md  # 主张-证据矩阵
@@ -41,15 +42,17 @@ research-workspace/outputs/projects/<project_key>/paper/
 ### Step 1: Coordinator - 输入分析
 
 读取用户输入，判断：
+
 - 输入类型（纯文本 / 已有草稿 / 实验数据 / 图表）
 - 复杂度评估（简单想法 / 复杂项目）
-- 输出语言（中文/英文，默认中文）
+- 输出语言（中文 / 英文，默认中文）
 
 ### Step 2: Executor - 生成文档
 
 使用模板生成：
 
 **project_brief.md 模板：**
+
 ```markdown
 # Project Brief
 
@@ -57,7 +60,7 @@ research-workspace/outputs/projects/<project_key>/paper/
 [Working title]
 
 ## 研究问题
-[1-2句话描述核心问题]
+[1-2 句话描述核心问题]
 
 ## 主要贡献点
 1. [Contribution 1]
@@ -76,6 +79,7 @@ research-workspace/outputs/projects/<project_key>/paper/
 ```
 
 **claims_evidence_matrix.md 模板：**
+
 ```markdown
 # Claims-Evidence Matrix
 
@@ -93,30 +97,32 @@ research-workspace/outputs/projects/<project_key>/paper/
 | E1 | | | C1 |
 ```
 
-### Step 3: 咚咚 - 审查
+### Step 3: Reviewer - 审查
 
 检查：
-- [ ] project_brief 是否清晰描述问题和贡献
-- [ ] claims_evidence_matrix 是否每条主张都有对应证据
-- [ ] 缺失证据是否已标注
+
+- [ ] `project_brief.md` 是否清晰描述问题与贡献
+- [ ] `claims_evidence_matrix.md` 是否为每条主张提供对应证据
+- [ ] 缺失证据是否已明确标注
 
 ### Step 4: Supervisor - 门禁
 
 检查：
+
 - [ ] 两个文件都存在且非空
 - [ ] claims 有对应 evidence，无悬空主张
 - [ ] 输出到正确项目目录
 
-门禁通过 → 输出"可进入 paper-architecture"
+门禁通过 → 输出“可进入 `paper-architecture`”
 
 ## 跨平台注意
 
-- Windows Codex: `C:\Users\18711\.codex\research-workspace`
-- Copilot Chat: `~/.codex/research-workspace`
+- Windows 常见路径：`C:\Users\<USER>\.codex\research-workspace`
+- Copilot Chat / 通用路径：`~/.codex/research-workspace`
 - 使用 `cc_switch_adapter.py` 自动检测路径
 
 ## 调用示例
 
-```
-/research-intake "研究主题：基于Transformer的遥感图像时序分析，已有实验结果在 results/ 目录"
+```text
+/research-intake "研究主题：基于 Transformer 的遥感图像时序分析，已有实验结果在 results/ 目录"
 ```
