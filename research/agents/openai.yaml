@@ -1,0 +1,7 @@
+﻿interface:
+  display_name: "research"
+  short_description: "用 /research 启动四角色科研写作与多模型协作审稿流程。"
+  default_prompt: "Use $research to start or continue the four-role research workflow for this project."
+
+policy:
+  allow_implicit_invocation: false

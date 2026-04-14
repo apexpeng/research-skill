@@ -1,0 +1,57 @@
+{
+    "updated_at": "2026-04-14",
+    "source_of_truth": "This file records the runtime role-to-model mapping for the research workflow.",
+    "providers": {
+        "longcat": {
+            "transport": "openai-chat-completions",
+            "base_url": "https://api.longcat.chat/openai/v1",
+            "api_key_env": "LONGCAT_API_KEY",
+            "base_url_env": "LONGCAT_BASE_URL",
+            "notes": "Use the official LongCat OpenAI-compatible chat completions endpoint."
+        },
+        "minimax": {
+            "transport": "anthropic-messages",
+            "base_url": "https://api.minimax.io/anthropic",
+            "api_key_env": "MINIMAX_API_KEY",
+            "base_url_env": "MINIMAX_BASE_URL",
+            "notes": "Use the official MiniMax Anthropic-compatible messages endpoint for Token Plan and M2.7-family models."
+        },
+        "openai-codex": {
+            "transport": "native-codex",
+            "notes": "Run inside the current Codex chat or via spawned OpenAI sub-agents."
+        }
+    },
+    "roles": {
+        "coordinator": {
+            "name": "Coordinator",
+            "provider": "longcat",
+            "model": "LongCat-Flash-Chat",
+            "model_env": "ARIS_COORDINATOR_MODEL",
+            "worker_mode": "external-api",
+            "responsibility": "stage routing, round control, blocking decisions"
+        },
+        "executor": {
+            "name": "Executor",
+            "provider": "minimax",
+            "model": "MiniMax-M2.7",
+            "model_env": "ARIS_EXECUTOR_MODEL",
+            "worker_mode": "external-api",
+            "responsibility": "drafting, integration, revision"
+        },
+        "reviewer": {
+            "name": "Reviewer",
+            "provider": "openai-codex",
+            "model": "session-default",
+            "worker_mode": "native-codex",
+            "responsibility": "independent critique, scoring, reviewer-risk analysis"
+        },
+        "supervisor": {
+            "name": "Supervisor",
+            "provider": "openai-codex",
+            "model": "session-default",
+            "worker_mode": "native-codex",
+            "responsibility": "gatekeeping, loop-limit enforcement, completeness checks"
+        }
+    },
+    "implementation_note": "LongCat and MiniMax run through a local external worker script. Reviewer and Supervisor roles run natively in Codex."
+}
